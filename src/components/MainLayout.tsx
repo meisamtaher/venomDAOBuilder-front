@@ -152,7 +152,7 @@ function MainLayout({ venomConnect }: Props) {
       navigate("/ExploreDAO");
     }
     else if(key == "CreateDAO"){
-      navigate("/CreateDAO");
+      navigate("/CreateDAOIntro");
     }
     
   };

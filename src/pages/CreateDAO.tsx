@@ -14,17 +14,16 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import tokenRootAbi from '../abi/TokenRoot.abi.json';
 import Link from '@mui/material/Link';
-import Text from '@mui/material/FormLabel'
+import Text from '@mui/material/FormLabel';
+import Grid from '@mui/material/Grid';
 
 
 function CreateDAO() {
     
   return (
-    <Container>
-      <Button>
-        Abbas
-      </Button>
-    </Container>
+    <Grid>
+
+    </Grid>
 
   );
 }
