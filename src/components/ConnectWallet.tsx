@@ -12,7 +12,7 @@ function ConnectWallet({ venomConnect }: Props) {
     await venomConnect.connect();
   };
   return (
-      <Button  variant="outlined" sx={{ p: 0 ,color: 'white', my: 1, mx: 1.5}} onClick={login}>
+      <Button  variant="outlined" sx={{ p: 0.8 ,color: 'white', my: 1, mx: 1.5}} onClick={login}>
         Connect wallet
       </Button>
   );

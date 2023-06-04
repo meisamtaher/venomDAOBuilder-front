@@ -16,22 +16,43 @@ import tokenRootAbi from '../abi/TokenRoot.abi.json';
 import Link from '@mui/material/Link';
 import Text from '@mui/material/FormLabel'
 import DAOCard from '../components/DAOCard';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
+import { Stack } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import {useNavigate} from 'react-router-dom';
+import venomPNG from '../assets/venom.png';
+import venomBridgePNG from '../assets/venom bridge.png';
+
+
+let DAOs = [
+  {name: "Venom",img: venomPNG, address:"lkjafd"},
+  {name: "Venom Bridge",img: venomBridgePNG, address:"venm"},
+  {name: "Venom",img: "~/public/venom.png", address:"wqfr"},
+  {name: "Venom",img: "~/public/venom.png", address:"qwe"},
+  {name: "Venom",img: "~/public/venom.png", address:"asdfasd"},
+  {name: "Venom Stake", img: "", address:"lkajsdqwef"},
+  {name: "Venom Stake", img: "", address:"sdasd"},
+  {name: "Venom Stake", img: "", address:"adsa"},
+  {name: "Venom Stake", img: "", address:"fdsfv"},
+]
+
 
 function ExploreDAO() {
-    
+  const navigate = useNavigate();
+  const handleDaoClick = (key: string) => {
+    navigate("/ExploreDAO/"+key);
+  };
   return (
-
-    <Container>
-      <Button>
-        Hey you 
-      </Button>
-    <DAOCard name= "Venom" description = "great dao platform" img= ".">
-    </DAOCard>
-    {/* <DAOCard name= "Uniswap" description = "this is uniswap" img= ".">
-    </DAOCard>
-    <DAOCard name= "Sushiswap" description = "better than others " img= ".">
-    </DAOCard> */}
-  </Container>
+    <Grid container padding={5} direction="row" spacing={5} justifyContent={'center'} alignItems={'flex-start'}>
+      {DAOs.map((dao) =>(
+        // <Item>
+        <Grid item>
+          <DAOCard name= {dao.name} address={dao.address} img= {dao.img} onClick={()=>handleDaoClick(dao.address)}/>
+        </Grid>
+        // </Item>
+      ))}
+    </Grid>
   );
 }
   
