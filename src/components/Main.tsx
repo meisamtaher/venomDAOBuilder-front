@@ -24,6 +24,9 @@ import { Label } from '@mui/icons-material';
 import MainLayout from './MainLayout';
 import ExploreDAO from '../pages/ExploreDAO';
 import CreateDAO from '../pages/CreateDAO';
+import CreateProposal from '../pages/CreateProposal';
+import DAODetails from '../pages/DAODetails';
+import ProposalDetails from '../pages/ProposalDetails';
 
 type Props = {
   venomConnect: VenomConnect | undefined;
@@ -166,6 +169,9 @@ function Main({ venomConnect }: Props) {
       <Routes>
           <Route path = "ExploreDAO" element={<ExploreDAO />} />
           <Route path = "CreateDAO" element={<CreateDAO />} />
+          <Route path = "ExploreDAO/:DAOId" element={<DAODetails />} />
+          <Route path = "ExploreDAO/:DAOId/:ProposalId" element={<ProposalDetails />} />
+          <Route path = "ExploreDAO/:DAOId/CreateNewPropoal" element={<CreateProposal />} />
           {/* <Route path="blogs" element={<Blogs />} />
           <Route path="contact" element={<Contact />} />
           <Route path="*" element={<NoPage />} /> */}
