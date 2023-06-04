@@ -16,16 +16,17 @@ import tokenRootAbi from '../abi/TokenRoot.abi.json';
 import Link from '@mui/material/Link';
 import Text from '@mui/material/FormLabel'
 
-function DAODetails() {
+
+function CreateProposal() {
     
   return (
     <Container>
-      <Button  sx={{ p: 0 ,color: "black"}} >
-        Create DAO 
+      <Button>
+        Proposal
       </Button>
     </Container>
 
   );
 }
   
-export default DAODetails;
+export default CreateProposal;
