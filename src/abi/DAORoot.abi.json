@@ -1,0 +1,161 @@
+{
+	"ABI version": 2,
+	"version": "2.2",
+	"header": ["pubkey", "time", "expire"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+				{"name":"_DaoCode","type":"cell"},
+				{"name":"_ProposalCode","type":"cell"},
+				{"name":"_Tip3VoteWalletCode","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "DeployDao",
+			"inputs": [
+				{"components":[{"name":"Name","type":"string"},{"name":"Logo","type":"string"},{"name":"TIP3_VOTE_ROOT_ADDRESS","type":"address"},{"name":"TIP3_VOTE_PROPPOSING_QUORUM","type":"uint256"},{"name":"MIN_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_VOTING_PERIOD","type":"uint32"},{"name":"MAX_VOTING_PERIOD","type":"uint32"},{"name":"MIN_VOTING_DELAY","type":"uint32"},{"name":"MAX_VOTING_DELAY","type":"uint32"},{"name":"MIN_TIME_LOCK","type":"uint32"},{"name":"MAX_TIME_LOCK","type":"uint32"},{"name":"MIN_GRACE_PERIOD","type":"uint32"},{"name":"MAX_GRACE_PERIOD","type":"uint32"},{"name":"proposalMaxDescriptionLen","type":"uint16"},{"name":"proposalMaxOperations","type":"uint8"}],"name":"_DaoConfig","type":"tuple"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "updateDaoCode",
+			"inputs": [
+				{"name":"_DaoCode","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "transferAdmin",
+			"inputs": [
+				{"name":"_newAdmin","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "acceptBeingAdmin",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getAdmin",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"admin_","type":"address"}
+			]
+		},
+		{
+			"name": "expectedDaoAddress",
+			"inputs": [
+				{"name":"_daoId","type":"uint32"},
+				{"name":"_admin_","type":"address"}
+			],
+			"outputs": [
+				{"name":"value0","type":"address"}
+			]
+		},
+		{
+			"name": "DaoCode",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"DaoCode","type":"cell"}
+			]
+		},
+		{
+			"name": "ProposalCode",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"ProposalCode","type":"cell"}
+			]
+		},
+		{
+			"name": "Tip3VoteWalletCode",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"Tip3VoteWalletCode","type":"cell"}
+			]
+		},
+		{
+			"name": "TotalDaos",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"TotalDaos","type":"uint256"}
+			]
+		},
+		{
+			"name": "pendingAdmin",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"pendingAdmin","type":"address"}
+			]
+		}
+	],
+	"data": [
+		{"key":1,"name":"admin","type":"address"},
+		{"key":2,"name":"_nonce","type":"uint32"}
+	],
+	"events": [
+		{
+			"name": "newDAODeployed",
+			"inputs": [
+				{"name":"_name","type":"string"},
+				{"name":"_logo","type":"string"},
+				{"name":"_address","type":"address"},
+				{"name":"_admin","type":"address"},
+				{"name":"_daoId","type":"uint256"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "DAORootAdminTransferreq",
+			"inputs": [
+				{"name":"_oldAdmin","type":"address"},
+				{"name":"_newAdmin","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "DAORootAdminTransfered",
+			"inputs": [
+				{"name":"_oldAdmin","type":"address"},
+				{"name":"_newAdmin","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "DAOCodeUpdated",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		}
+	],
+	"fields": [
+		{"name":"_pubkey","type":"uint256"},
+		{"name":"_timestamp","type":"uint64"},
+		{"name":"_constructorFlag","type":"bool"},
+		{"name":"admin","type":"address"},
+		{"name":"_nonce","type":"uint32"},
+		{"name":"DaoCode","type":"cell"},
+		{"name":"ProposalCode","type":"cell"},
+		{"name":"Tip3VoteWalletCode","type":"cell"},
+		{"name":"TotalDaos","type":"uint256"},
+		{"name":"pendingAdmin","type":"address"}
+	]
+}
