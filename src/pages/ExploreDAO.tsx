@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -23,32 +23,59 @@ import { styled } from '@mui/material/styles';
 import {useNavigate} from 'react-router-dom';
 import venomPNG from '../assets/venom.png';
 import venomBridgePNG from '../assets/venom bridge.png';
+import {VenomConnect} from 'venom-connect';
+import { Address, Contract, EventsBatch, ProviderRpcClient } from 'everscale-inpage-provider';
+import DAORootAddress from '../constants/constants';
+import daoRootAbi from '../abi/DAORoot.abi.json'
 
+// let DAOs = [
+//   {name: "Venom",img: venomPNG, address:"lkjafd"},
+//   {name: "Venom Bridge",img: venomBridgePNG, address:"venm"},
+//   {name: "Venom",img: "~/public/venom.png", address:"wqfr"},
+//   {name: "Venom",img: "~/public/venom.png", address:"qwe"},
+//   {name: "Venom",img: "~/public/venom.png", address:"asdfasd"},
+//   {name: "Venom Stake", img: "", address:"lkajsdqwef"},
+//   {name: "Venom Stake", img: "", address:"sdasd"},
+//   {name: "Venom Stake", img: "", address:"adsa"},
+//   {name: "Venom Stake", img: "", address:"fdsfv"},
+// ]
+type Props = {
+  venomConnect: VenomConnect | undefined;
+};
 
-let DAOs = [
-  {name: "Venom",img: venomPNG, address:"lkjafd"},
-  {name: "Venom Bridge",img: venomBridgePNG, address:"venm"},
-  {name: "Venom",img: "~/public/venom.png", address:"wqfr"},
-  {name: "Venom",img: "~/public/venom.png", address:"qwe"},
-  {name: "Venom",img: "~/public/venom.png", address:"asdfasd"},
-  {name: "Venom Stake", img: "", address:"lkajsdqwef"},
-  {name: "Venom Stake", img: "", address:"sdasd"},
-  {name: "Venom Stake", img: "", address:"adsa"},
-  {name: "Venom Stake", img: "", address:"fdsfv"},
-]
-
-
-function ExploreDAO() {
+function ExploreDAO({ venomConnect }: Props) {
   const navigate = useNavigate();
   const handleDaoClick = (key: string) => {
     navigate("/ExploreDAO/"+key);
   };
+  const [DAOs, setDAOs] = useState<EventsBatch<typeof daoRootAbi,"newDAODeployed"> | undefined>();
+  const onGetallDAOs = async() =>{
+    console.log("Custom Button");
+    if(!venomConnect) return;
+    const standalone: ProviderRpcClient | undefined = await venomConnect?.getStandalone('venomwallet');
+    if(standalone){
+      let address = new Address(DAORootAddress)
+      const DAORoot = new standalone.Contract(daoRootAbi,address);
+      if(DAORoot){
+        setDAOs( (await DAORoot?.getPastEvents({
+          filter: 'newDAODeployed',
+          range: {
+            fromUtime: 0,
+          },
+        })));
+        console.log( DAOs);
+      }
+    }
+  };
+  useEffect(()=>{
+    onGetallDAOs();
+  },[venomConnect]);
   return (
     <Grid container padding={5} direction="row" spacing={5} justifyContent={'center'} alignItems={'flex-start'}>
-      {DAOs.map((dao) =>(
+      {DAOs?.events?.map((dao) =>(
         // <Item>
         <Grid item>
-          <DAOCard name= {dao.name} address={dao.address} img= {dao.img} onClick={()=>handleDaoClick(dao.address)}/>
+          <DAOCard name= {dao.data["_name"]} key = {dao.data["_daoId"]}  address={dao.data["_address"]} img= {dao.data["_logo"]} onClick={()=>handleDaoClick(dao.data["_address"])}/>
         </Grid>
         // </Item>
       ))}

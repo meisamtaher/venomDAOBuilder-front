@@ -17,6 +17,9 @@ function ProposalCard(props: Props) {
           <Typography gutterBottom variant="h5" component="div">
             {props.name}
           </Typography>
+          <Typography gutterBottom variant="h6" component="div">
+            {props.description}
+          </Typography>
         </CardContent>
       </CardActionArea>
     </Card>
