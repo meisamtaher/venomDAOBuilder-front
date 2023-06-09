@@ -17,7 +17,7 @@ import Link from '@mui/material/Link';
 import Text from '@mui/material/FormLabel';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
-import { Widgets } from '@mui/icons-material';
+import { ConstructionOutlined, Widgets } from '@mui/icons-material';
 import Stack  from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -25,6 +25,11 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { Radio } from '@mui/material';
 import {VenomConnect} from 'venom-connect';
 import DAORootAddress from '../constants/constants';
+import DAORootAbi from '../abi/DAORoot.abi.json';
+import VoteTokenRootAbi from '../abi/VoteTokenRoot.abi.json';
+import {getValueForSend} from "../utils/helpers";
+import { Address, Contract, ProviderRpcClient, TvmException } from 'everscale-inpage-provider';
+
 
 const defaultValues = {
   name: "",
@@ -48,19 +53,102 @@ const defaultValues = {
 };
 type Props = {
   venomConnect: VenomConnect | undefined;
+  venomProvider: any;
+  address: string| undefined;
 };
 
-function CreateDAO({ venomConnect }: Props) {
+var DaoConfig = {
+  Name: "",
+  Logo: "",
+  TIP3_VOTE_ROOT_ADDRESS: new Address(""),
+  TIP3_VOTE_PROPPOSING_QUORUM: 10,
+  MIN_TIP3_VOTE_THRESHOLD: 50,
+  MAX_TIP3_VOTE_THRESHOLD: 50,
+  MAX_PROPOSAL_QUORUM: 50,
+  MIN_PROPOSAL_QUORUM: 20,
+  MIN_VOTING_PERIOD: 0,
+  MAX_VOTING_PERIOD: 1200000,
+  MIN_VOTING_DELAY: 0,
+  MAX_VOTING_DELAY: 30,
+  MIN_TIME_LOCK: 0,
+  MAX_TIME_LOCK: 86400,
+  MIN_GRACE_PERIOD: 0,
+  MAX_GRACE_PERIOD: 1800,
+  proposalMaxDescriptionLen: 255,
+  proposalMaxOperations: 20,
+};
+
+function CreateDAO({ venomConnect, venomProvider, address }: Props) {
   // let token-type:
   const [formValues, setFormValues] = useState(defaultValues);
-  const onDeployDAOClick = () =>{
 
+  const DeployDAO = async() =>{
+    // const provider: ProviderRpcClient | undefined = await venomConnect?.currentProvider();
+    if(venomProvider && address){
+      console.log("Deploying new DAO ")
+      let contract = new venomProvider.Contract(DAORootAbi,new Address(DAORootAddress));
+      console.log("fethed contract:", contract);
+      let walletAddress = new Address (address);
+      console.log("Address: ", walletAddress);
+      DaoConfig.Name = formValues.name;
+      DaoConfig.Logo = formValues.logo;
+      if(formValues.tokenType == "existedToken"){
+        DaoConfig.TIP3_VOTE_ROOT_ADDRESS = new Address(formValues.tokenAddress);
+      }
+      else{
+        ///here we should Deploy a new TIP3Token 
+      }
+      DaoConfig.MAX_GRACE_PERIOD = DaoConfig.MIN_GRACE_PERIOD  = formValues.gracePeriod;
+      DaoConfig.MAX_VOTING_PERIOD = DaoConfig.MIN_VOTING_PERIOD  = formValues.votinPeriod;
+      DaoConfig.MAX_TIME_LOCK = DaoConfig.MIN_TIME_LOCK  = formValues.timeLock;
+      DaoConfig.MAX_VOTING_DELAY = DaoConfig.MIN_VOTING_DELAY  = formValues.votingDelay;
+      DaoConfig.MAX_PROPOSAL_QUORUM = DaoConfig.MIN_PROPOSAL_QUORUM  = formValues.proposalQuorum;
+      DaoConfig.proposalMaxDescriptionLen = formValues.maxProposalDescription;
+      DaoConfig.proposalMaxOperations = formValues.maxProposalOperation;
+      try {
+        let x = await contract?.methods.DeployDao({ _DaoConfig:DaoConfig
+          }as never)
+         .send({
+           from: walletAddress,
+           amount: getValueForSend(1),
+           bounce: true
+        })
+        return x;
+        console.log("return :", x);
+      } catch (e) {
+        if (e instanceof TvmException) {
+          console.log(`TVM Exception: ${e.code}`);
+        } else {
+          console.log('Expectino: ', e)
+        }
+      }
+    }
   }  
   const handleSubmit = (event:any) => {
     event.preventDefault();
     console.log(formValues);
-
+    DeployDAO();
   };
+  const DeployNewToken = async (name: string, symbol: string, totalSupply: number,ownerAddress:Address ) =>{
+    // try {
+    //   console.log("Deploying new DAO ")
+    //   venomProvider.d
+    //   let x = await contract?.methods.DeployDao({ _DaoConfig:DaoConfig
+    //     }as never)
+    //    .send({
+    //      from: walletAddress,
+    //      amount: getValueForSend(1),
+    //      bounce: true
+    //   })
+    //   console.log("return :", x);
+    // } catch (e) {
+    //   if (e instanceof TvmException) {
+    //     console.log(`TVM Exception: ${e.code}`);
+    //   } else {
+    //     console.log('Expectino: ', e)
+    //   }
+    // }
+  }
   const handleInputChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> ) => {
     const { name, value } = e.target;
     setFormValues({
@@ -84,6 +172,12 @@ function CreateDAO({ venomConnect }: Props) {
             placeholder="Type your DAO’s name...."
             name= "name"
             value={formValues.name}
+            onChange={handleInputChange}
+          />
+          <TextField id="dao-logo" label="Logo"
+            placeholder="URL of your logo image (better to use IPFS) eg.https://gateway.pinata.cloud/ipfs/QmQZaxNbWPJcv1giprRMidrSQqVjkXEsKKcThZT1M38CPX?_gl=1*ku5qt2*rs_ga*NjUyODAyMjEwLjE2ODQ1OTgyODk.*rs_ga_5RMPXG14TE*MTY4NjI0MDQ4Ni42LjEuMTY4NjI0MDQ4Ni42MC4wLjA."
+            name= "logo"
+            value={formValues.logo}
             onChange={handleInputChange}
           />
         </Stack>
@@ -172,8 +266,8 @@ function CreateDAO({ venomConnect }: Props) {
           <Typography fontSize={10}>Minimum duration is the shortest length of time a proposal can be open for voting. You can extend the duration for each proposal but not shorten it.</Typography>
           <TextField required id="minimum-participation"
               placeholder="Number between 0 to 100 eg. 50"
-              name= "threshold"
-              value={formValues.threshold}
+              name= "votinPeriod"
+              value={formValues.votinPeriod}
               onChange={handleInputChange}
             />
         </Stack>

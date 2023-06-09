@@ -170,10 +170,10 @@ function Main({ venomConnect }: Props) {
       <Routes>
           <Route path = "ExploreDAO" element={<ExploreDAO venomConnect = {venomConnect}/>} />
           <Route path = "CreateDAOIntro" element={<CreateDAOIntro />} />
-          <Route path = "CreateDAO" element={<CreateDAO venomConnect= {venomConnect}/>} />
+          <Route path = "CreateDAO" element={<CreateDAO venomConnect= {venomConnect} venomProvider= {venomProvider} address = {address}/>} />
           <Route path = "ExploreDAO/:DAOId" element={<DAODetails venomConnect= {venomConnect} />} />
           <Route path = "ExploreDAO/:DAOId/:ProposalId" element={<ProposalDetails />} />
-          <Route path = "ExploreDAO/:DAOId/CreateNewPropoal" element={<CreateProposal />} />
+          <Route path = "ExploreDAO/:DAOId/CreateNewPropoal" element={<CreateProposal venomConnect= {venomConnect} venomProvider= {venomProvider} address = {address}/>} />
           {/* <Route path="blogs" element={<Blogs />} />
           <Route path="contact" element={<Contact />} />
           <Route path="*" element={<NoPage />} /> */}
