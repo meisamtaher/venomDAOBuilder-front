@@ -146,6 +146,9 @@ function MainLayout({ venomConnect }: Props) {
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
+  const handleLogoClick = () => {
+    navigate("");
+  };
 
   const handleCloseNavMenu = (key: string) => {
     if(key == "ExploreDAO"){
@@ -171,7 +174,7 @@ function MainLayout({ venomConnect }: Props) {
     <AppBar position="static" style={{ background: "linear-gradient(269.67deg, #CCE1FA -10.61%, #C6EEEA 113.26%)" }} >
       <Container maxWidth="xl" >
         <Toolbar disableGutters >
-          <img src={Logo} width={40} />
+          <img src={Logo} width={40} onClick={handleLogoClick} />
           {/* <Typography
             variant="h6"
             noWrap
