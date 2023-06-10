@@ -1,9 +1,10 @@
 {
   "files": {
     "main.css": "/venomDAOBuilder-front/static/css/main.abd64e84.css",
-    "main.js": "/venomDAOBuilder-front/static/js/main.d917d530.js",
+    "main.js": "/venomDAOBuilder-front/static/js/main.e8a0045c.js",
     "static/js/787.4579cd7e.chunk.js": "/venomDAOBuilder-front/static/js/787.4579cd7e.chunk.js",
     "static/media/nekoton_wasm_bg.wasm": "/venomDAOBuilder-front/static/media/nekoton_wasm_bg.21e5dfd82a6a7598ae46.wasm",
+    "static/media/homepage.svg": "/venomDAOBuilder-front/static/media/homepage.27c3fb0ab0130c6802beb87356a4d290.svg",
     "static/media/Logo.png": "/venomDAOBuilder-front/static/media/Logo.9cf16768822effcd217d.png",
     "static/media/Define Membership.svg": "/venomDAOBuilder-front/static/media/Define Membership.348731ff394c15bca2fd63180de25273.svg",
     "static/media/Add Action.svg": "/venomDAOBuilder-front/static/media/Add Action.a7be907fb17b9515dab480ce2c938e91.svg",
@@ -11,11 +12,11 @@
     "static/media/DescribeDao.svg": "/venomDAOBuilder-front/static/media/DescribeDao.5a83f1d8f7ca9539b6e95ed8cdf89471.svg",
     "index.html": "/venomDAOBuilder-front/index.html",
     "main.abd64e84.css.map": "/venomDAOBuilder-front/static/css/main.abd64e84.css.map",
-    "main.d917d530.js.map": "/venomDAOBuilder-front/static/js/main.d917d530.js.map",
+    "main.e8a0045c.js.map": "/venomDAOBuilder-front/static/js/main.e8a0045c.js.map",
     "787.4579cd7e.chunk.js.map": "/venomDAOBuilder-front/static/js/787.4579cd7e.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.abd64e84.css",
-    "static/js/main.d917d530.js"
+    "static/js/main.e8a0045c.js"
   ]
 }
