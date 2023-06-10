@@ -97,7 +97,7 @@ function DAODetails({ venomConnect }: Props) {
             <Typography sx= {{minWidth:300, minHeight: 60}}> You can create a new proposal</Typography>
           </Grid>
           <Grid item>
-            <Button sx= {{background:"gray", minHeight: 50, color:'black'}} onClick={()=>handleNewPrposalClick()}>New Proposal</Button>
+            <Button sx= {{background:"hotpink", minHeight: 50, color:'black'}} onClick={()=>handleNewPrposalClick()}>New Proposal</Button>
           </Grid>
         </Grid>
       </Card>

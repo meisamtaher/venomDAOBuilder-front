@@ -30,6 +30,8 @@ import { Address, Contract, ProviderRpcClient, TvmException } from 'everscale-in
 import ProposalStatus from '../components/ProposalStatus';
 import { RadioGroup,FormControlLabel, Radio } from '@mui/material';
 import {getValueForSend} from "../utils/helpers";
+import useNotification from '../components/Snackbar';
+
 
 
 
@@ -52,11 +54,12 @@ function ProposalDetails({ venomConnect, venomProvider, address }: Props) {
   const[againstPercent, setAgainstPercent] = useState<number|undefined>();
   const[againstVotes,setAgainstVotes] = useState<number|undefined>();
   const[vote,setVote] = useState<string>();
+  const sendNotification = useNotification();
   const[proposalContract, setProposalContract] = useState<Contract<typeof ProposalAbi>>();
   const getDetails = async()=>{
     console.log("Getting configs.... ");
     if(!daoContract || !proposalContract || !venomConnect) return;
-    console.log("Heeeeeeeey"); 
+    // console.log("Heeeeeeeey"); 
     let resul1 = await daoContract?.methods.Config({}as never).call({});
     setDaoConfig(resul1["Config"]);
     // let result2 = await proposalContract?.methods.initConfig({}as never).call({});
@@ -93,12 +96,15 @@ function ProposalDetails({ venomConnect, venomProvider, address }: Props) {
         amount: getValueForSend(1),
         bounce: true
       });
+      sendNotification({msg:"Vote transaction sent successfully",variant:"success"});
       console.log("Vote return :", x);
     } catch (e) {
       if (e instanceof TvmException) {
+        sendNotification({msg:"code: "+e.code +e.message,variant:"error"})
         console.log(`TVM Exception: ${e.code}`);
       } else {
-        console.log('Expectino: ', e)
+        console.log('Expectino: ', e);
+        sendNotification({msg:"some error occurred" ,variant:"error"});
       }
     }
 

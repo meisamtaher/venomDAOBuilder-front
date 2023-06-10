@@ -43,7 +43,7 @@ const defaultValues = {
   threshold:50,
   votinPeriod:0,
   votingDelay:0,
-  tokenType:"newToken",
+  tokenType:"existedToken",
   tokenAddress:"",
   tokenName:"",
   tokenSymbol:"",
@@ -204,7 +204,7 @@ function CreateDAO({ venomConnect, venomProvider, address }: Props) {
             value={formValues.tokenType}
             onChange={handleInputChange}
           >
-            <FormControlLabel key="newToken" value="newToken" control={<Radio />} label="Create New TIP3Vote Token" />
+            <FormControlLabel disabled key="newToken" value="newToken" control={<Radio />} label="Create New TIP3Vote Token" />
             <FormControlLabel key="existedToken" value="existedToken" control={<Radio />} label="Use Existed Token" />
           </RadioGroup>
   
@@ -268,10 +268,10 @@ function CreateDAO({ venomConnect, venomProvider, address }: Props) {
               value={formValues.proposalQuorum}
               onChange={handleInputChange}
             />
-          <Typography >Minimun Duration</Typography>
-          <Typography fontSize={10}>Minimum duration is the shortest length of time a proposal can be open for voting. You can extend the duration for each proposal but not shorten it.</Typography>
+          {/* <Typography >Minimun Duration</Typography>
+          <Typography fontSize={10}>Minimum duration is the shortest length of time a proposal can be open for voting. You can extend the duration for each proposal but not shorten it.</Typography> */}
           <Typography >Voting period</Typography>
-          <Typography fontSize={10}>Minimum duration is the shortest length of time a proposal can be open for voting. You can extend the duration for each proposal but not shorten it.</Typography>
+          <Typography fontSize={10}>Voting Period is the length of time a proposal is open for voting in miliseconds eg. 86400000 (1day).</Typography>
           <TextField required id="minimum-participation"
               placeholder="Number between 0 to 100 eg. 50"
               name= "votinPeriod"
