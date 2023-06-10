@@ -11,13 +11,13 @@ type Props = PropsWithChildren<Proposal>;
 function ProposalCard(props: Props) {
     
   return (
-    <Card sx={{ maxWidth: 345, minHeight: 345 }} onClick={props.onClick}>
+    <Card sx={{ maxWidth: 345, minHeight: 345, background: '#F6F3FC' }} onClick={props.onClick}>
       <CardActionArea>
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+        <CardContent >
+          <Typography  variant="h5" marginBottom={3} >
             {props.name}
           </Typography>
-          <Typography gutterBottom variant="h6" component="div">
+          <Typography   >
             {props.description}
           </Typography>
         </CardContent>
