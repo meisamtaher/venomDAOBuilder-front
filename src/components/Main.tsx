@@ -171,7 +171,7 @@ function Main({ venomConnect }: Props) {
       <MainLayout venomConnect={venomConnect} />
       <Routes>
 
-          <Route path = "" element = {<HomePage/>} />
+          <Route path = "venomDAOBuilder-front" element = {<HomePage/>} />
           <Route path = "ExploreDAO" element={<ExploreDAO venomConnect = {venomConnect}/>} />
           <Route path = "CreateDAOIntro" element={<CreateDAOIntro />} />
           <Route path = "CreateDAO" element={<CreateDAO venomConnect= {venomConnect} venomProvider= {venomProvider} address = {address}/>} />
