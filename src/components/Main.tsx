@@ -65,36 +65,36 @@ function Main({ venomConnect }: Props) {
   };
   // Same idea for token balance fetching. Usage of standalone client and balance method of TIP-3 TokenWallet
   // We already knows user's TokenWallet address
-  const getBalance = async (wallet: string) => {
-    if (!venomConnect) return;
-    const standalone: ProviderRpcClient | undefined = await venomConnect?.getStandalone('venomwallet');
-    if (standalone) {
-      if (!tokenWalletAddress) {
-        await setupTokenWalletAddress(standalone, wallet);
-      }
-      if (!venomProvider || !tokenWalletAddress) return;
-      try {
-        const contractAddress = new Address(tokenWalletAddress);
-        const contract = new standalone.Contract(tokenWalletAbi, contractAddress);
-        // We check a contract state here to acknowledge if TokenWallet already deployed
-        // As you remember, wallet can be deployed with first transfer on it.
-        // If our wallet isn't deployed, so it's balance is 0 :)
-        const contractState = await venomProvider.rawApi.getFullContractState({ address: tokenWalletAddress });
-        if (contractState.state) {
-          // But if this deployed, just call a balance function
-          const result = (await contract.methods.balance({ answerId: 0 } as never).call()) as any;
-          const tokenBalance = result.value0; // It will be with decimals. Format if you want by dividing with 10**decimals
-          setBalance(tokenBalance);
-        } else {
-          setBalance('0');
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    } else {
-      alert('Standalone is not available now');
-    }
-  };
+  // const getBalance = async (wallet: string) => {
+  //   if (!venomConnect) return;
+  //   const standalone: ProviderRpcClient | undefined = await venomConnect?.getStandalone('venomwallet');
+  //   if (standalone) {
+  //     if (!tokenWalletAddress) {
+  //       await setupTokenWalletAddress(standalone, wallet);
+  //     }
+  //     if (!venomProvider || !tokenWalletAddress) return;
+  //     try {
+  //       const contractAddress = new Address(tokenWalletAddress);
+  //       const contract = new standalone.Contract(tokenWalletAbi, contractAddress);
+  //       // We check a contract state here to acknowledge if TokenWallet already deployed
+  //       // As you remember, wallet can be deployed with first transfer on it.
+  //       // If our wallet isn't deployed, so it's balance is 0 :)
+  //       const contractState = await venomProvider.rawApi.getFullContractState({ address: tokenWalletAddress });
+  //       if (contractState.state) {
+  //         // But if this deployed, just call a balance function
+  //         const result = (await contract.methods.balance({ answerId: 0 } as never).call()) as any;
+  //         const tokenBalance = result.value0; // It will be with decimals. Format if you want by dividing with 10**decimals
+  //         setBalance(tokenBalance);
+  //       } else {
+  //         setBalance('0');
+  //       }
+  //     } catch (e) {
+  //       console.error(e);
+  //     }
+  //   } else {
+  //     alert('Standalone is not available now');
+  //   }
+  // };
 
 
   // This method allows us to get a wallet address from inpage provider
@@ -160,9 +160,9 @@ function Main({ venomConnect }: Props) {
 
 
 
-  useEffect(() => {
-    if (address) getBalance(address);
-  }, [address]);
+  // useEffect(() => {
+  //   if (address) getBalance(address);
+  // }, [address]);
   
   return (
     <BrowserRouter>
@@ -172,7 +172,7 @@ function Main({ venomConnect }: Props) {
           <Route path = "CreateDAOIntro" element={<CreateDAOIntro />} />
           <Route path = "CreateDAO" element={<CreateDAO venomConnect= {venomConnect} venomProvider= {venomProvider} address = {address}/>} />
           <Route path = "ExploreDAO/:DAOId" element={<DAODetails venomConnect= {venomConnect} />} />
-          <Route path = "ExploreDAO/:DAOId/:ProposalId" element={<ProposalDetails />} />
+          <Route path = "ExploreDAO/:DAOId/:ProposalId" element={<ProposalDetails venomConnect= {venomConnect} venomProvider= {venomProvider} address = {address}/>} />
           <Route path = "ExploreDAO/:DAOId/CreateNewPropoal" element={<CreateProposal venomConnect= {venomConnect} venomProvider= {venomProvider} address = {address}/>} />
           {/* <Route path="blogs" element={<Blogs />} />
           <Route path="contact" element={<Contact />} />
