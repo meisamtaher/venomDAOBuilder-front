@@ -29,6 +29,9 @@ import DAORootAbi from '../abi/DAORoot.abi.json';
 import VoteTokenRootAbi from '../abi/VoteTokenRoot.abi.json';
 import {getValueForSend} from "../utils/helpers";
 import { Address, Contract, ProviderRpcClient, TvmException } from 'everscale-inpage-provider';
+import useNotification from '../components/Snackbar';
+import {useNavigate,useParams} from 'react-router-dom';
+
 
 
 const defaultValues = {
@@ -81,7 +84,8 @@ var DaoConfig = {
 function CreateDAO({ venomConnect, venomProvider, address }: Props) {
   // let token-type:
   const [formValues, setFormValues] = useState(defaultValues);
-
+  const sendNotification = useNotification();
+  const navigate = useNavigate();
   const DeployDAO = async() =>{
     // const provider: ProviderRpcClient | undefined = await venomConnect?.currentProvider();
     if(venomProvider && address){
@@ -113,12 +117,16 @@ function CreateDAO({ venomConnect, venomProvider, address }: Props) {
            amount: getValueForSend(1),
            bounce: true
         })
-        return x;
-        console.log("return :", x);
+        sendNotification({msg:"Deployment message has been sent",variant:"success"})
+        console.log("deployment result :", x);
+        navigate("/ExploreDAO");
+
       } catch (e) {
         if (e instanceof TvmException) {
+          sendNotification({msg:e.message ,variant:"error"});
           console.log(`TVM Exception: ${e.code}`);
         } else {
+          sendNotification({msg:"some error ocurred" ,variant:"error"});
           console.log('Expectino: ', e)
         }
       }

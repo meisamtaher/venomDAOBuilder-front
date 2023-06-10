@@ -28,6 +28,7 @@ import CreateDAOIntro from '../pages/CreateDAOIntro';
 import CreateProposal from '../pages/CreateProposal';
 import DAODetails from '../pages/DAODetails';
 import ProposalDetails from '../pages/ProposalDetails';
+import { Snackbar } from '@mui/material';
 
 type Props = {
   venomConnect: VenomConnect | undefined;

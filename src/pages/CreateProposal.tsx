@@ -20,12 +20,12 @@ import Stack  from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import SvgIcon  from '@mui/material/SvgIcon';
 import {ReactComponent as AddActionSVG} from '../assets/Add Action.svg';
-import { Routes, Route, useParams } from 'react-router-dom';
+import { Routes, Route, useParams,useNavigate } from 'react-router-dom';
 import DaoAbi from '../abi/DAO.abi.json';
 import {VenomConnect} from 'venom-connect';
 import {getValueForSend} from "../utils/helpers";
 import { Address, Contract, ProviderRpcClient, TvmException } from 'everscale-inpage-provider';
-
+import useNotification from '../components/Snackbar';
 
 var defaultValues = {
   title: "",
@@ -50,7 +50,8 @@ type Action = {
 
 function CreateProposal({ venomConnect, venomProvider, address }: Props) {
   let { DAOId } = useParams();  
-  
+  const navigate = useNavigate();
+  const sendNotification = useNotification();
   const [proposalFrom, setFormValues] = useState(defaultValues);
   const [actions, setActions] = useState<Action[]>([]);
   const handleInputChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> ) => {
@@ -94,13 +95,16 @@ function CreateProposal({ venomConnect, venomProvider, address }: Props) {
            amount: getValueForSend(1),
            bounce: true
         })
-        return x;
-        console.log("return :", x);
+        sendNotification({msg:"Proposal Deployment message has been sent",variant:"success"})
+        console.log("deployment result :", x);
+        navigate("/ExploreDAO/"+DAOId);
       } catch (e) {
         if (e instanceof TvmException) {
           console.log(`TVM Exception: ${e.code}`);
+          sendNotification({msg:"code: "+e.code +e.message,variant:"error"})
         } else {
           console.log('Expectino: ', e)
+          sendNotification({msg:"some error ocurred" ,variant:"error"});
         }
       }
     }

@@ -5,6 +5,7 @@ import Main from "./components/Main";
 
 import { initVenomConnect } from './venom-connect/configure';
 import VenomConnect from 'venom-connect';
+import {SnackbarProvider} from 'notistack';
 
 function App() {
   const [venomConnect, setVenomConnect] = useState<VenomConnect | undefined>();
@@ -16,7 +17,9 @@ function App() {
     init();
   }, []);
   return (
-    <Main venomConnect={venomConnect} />
+    <SnackbarProvider>
+      <Main venomConnect={venomConnect} />
+    </SnackbarProvider>
   );
 }
 
