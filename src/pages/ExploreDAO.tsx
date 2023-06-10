@@ -48,7 +48,7 @@ function ExploreDAO({ venomConnect }: Props) {
   const handleDaoClick = (key: string) => {
     navigate("/ExploreDAO/"+key);
   };
-  const [DAOs, setDAOs] = useState<EventsBatch<typeof daoRootAbi,"newDAODeployed"> | undefined>();
+  const [DAOs, setDAOs] = useState<EventsBatch<typeof daoRootAbi,"NewDAODeployed"> | undefined>();
   const onGetallDAOs = async() =>{
     console.log("Custom Button");
     if(!venomConnect) return;
@@ -58,7 +58,7 @@ function ExploreDAO({ venomConnect }: Props) {
       const DAORoot = new standalone.Contract(daoRootAbi,address);
       if(DAORoot){
         setDAOs( (await DAORoot?.getPastEvents({
-          filter: 'newDAODeployed',
+          filter: 'NewDAODeployed',
           range: {
             fromUtime: 0,
           },

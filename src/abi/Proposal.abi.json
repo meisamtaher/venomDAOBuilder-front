@@ -6,11 +6,12 @@
 		{
 			"name": "constructor",
 			"inputs": [
-				{"components":[{"name":"title","type":"string"},{"name":"description","type":"string"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"}],"name":"_initConfig","type":"tuple"},
-				{"components":[{"name":"value","type":"uint256"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"_venomActions","type":"tuple[]"},
+				{"components":[{"name":"title","type":"string"},{"name":"description","type":"string"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"},{"name":"sponser","type":"bool"}],"name":"_initConfig","type":"tuple"},
+				{"components":[{"name":"value","type":"uint128"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"_venomActions","type":"tuple[]"},
 				{"name":"_proposer","type":"address"},
-				{"name":"_Tip3VoteWalletCode","type":"cell"},
-				{"name":"_tip3VoteRootAddress","type":"address"}
+				{"name":"_tip3VoteWalletCode","type":"cell"},
+				{"name":"_tip3VoteRootAddress","type":"address"},
+				{"name":"_venomActionTotalValue","type":"uint128"}
 			],
 			"outputs": [
 			]
@@ -34,7 +35,7 @@
 			]
 		},
 		{
-			"name": "Queue",
+			"name": "queue",
 			"inputs": [
 			],
 			"outputs": [
@@ -66,9 +67,9 @@
 			"inputs": [
 			],
 			"outputs": [
-				{"components":[{"name":"title","type":"string"},{"name":"description","type":"string"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"}],"name":"initConf_","type":"tuple"},
-				{"name":"states_","type":"uint8"},
-				{"components":[{"name":"value","type":"uint256"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"venomActions_","type":"tuple[]"},
+				{"components":[{"name":"title","type":"string"},{"name":"description","type":"string"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"},{"name":"sponser","type":"bool"}],"name":"initConf_","type":"tuple"},
+				{"name":"state_","type":"uint8"},
+				{"components":[{"name":"value","type":"uint128"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"venomActions_","type":"tuple[]"},
 				{"name":"creationBlockTS_","type":"uint256"},
 				{"name":"proposer_","type":"address"},
 				{"name":"forVotes_","type":"uint256"},
@@ -78,7 +79,7 @@
 				{"name":"startTime_","type":"uint256"},
 				{"name":"endTime_","type":"uint256"},
 				{"name":"executionTime_","type":"uint256"},
-				{"name":"Tip3VoteWalletCode_","type":"cell"},
+				{"name":"tip3VoteWalletCode_","type":"cell"},
 				{"name":"tip3VoteRootAddress_","type":"address"}
 			]
 		},
@@ -87,7 +88,7 @@
 			"inputs": [
 			],
 			"outputs": [
-				{"components":[{"name":"value","type":"uint256"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"venomActions_","type":"tuple[]"}
+				{"components":[{"name":"value","type":"uint128"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"venomActions_","type":"tuple[]"}
 			]
 		},
 		{
@@ -119,7 +120,7 @@
 			"inputs": [
 			],
 			"outputs": [
-				{"components":[{"name":"value","type":"uint256"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"venomActions","type":"tuple[]"}
+				{"components":[{"name":"value","type":"uint128"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"venomActions","type":"tuple[]"}
 			]
 		},
 		{
@@ -127,7 +128,7 @@
 			"inputs": [
 			],
 			"outputs": [
-				{"components":[{"name":"title","type":"string"},{"name":"description","type":"string"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"}],"name":"initConfig","type":"tuple"}
+				{"components":[{"name":"title","type":"string"},{"name":"description","type":"string"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"},{"name":"sponser","type":"bool"}],"name":"initConfig","type":"tuple"}
 			]
 		},
 		{
@@ -211,11 +212,11 @@
 			]
 		},
 		{
-			"name": "Tip3VoteWalletCode",
+			"name": "tip3VoteWalletCode",
 			"inputs": [
 			],
 			"outputs": [
-				{"name":"Tip3VoteWalletCode","type":"cell"}
+				{"name":"tip3VoteWalletCode","type":"cell"}
 			]
 		},
 		{
@@ -224,6 +225,22 @@
 			],
 			"outputs": [
 				{"name":"tip3VoteRootAddress","type":"address"}
+			]
+		},
+		{
+			"name": "venomActionTotalValue",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"venomActionTotalValue","type":"uint128"}
+			]
+		},
+		{
+			"name": "voteTrack",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"voteTrack","type":"map(address,bool)"}
 			]
 		}
 	],
@@ -281,8 +298,8 @@
 		{"name":"_constructorFlag","type":"bool"},
 		{"name":"PROPOSAL_ID","type":"uint256"},
 		{"name":"DaoAddress","type":"address"},
-		{"components":[{"name":"value","type":"uint256"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"venomActions","type":"tuple[]"},
-		{"components":[{"name":"title","type":"string"},{"name":"description","type":"string"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"}],"name":"initConfig","type":"tuple"},
+		{"components":[{"name":"value","type":"uint128"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"venomActions","type":"tuple[]"},
+		{"components":[{"name":"title","type":"string"},{"name":"description","type":"string"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"},{"name":"sponser","type":"bool"}],"name":"initConfig","type":"tuple"},
 		{"name":"state","type":"uint8"},
 		{"name":"creationBlockTS","type":"uint256"},
 		{"name":"proposer","type":"address"},
@@ -293,7 +310,9 @@
 		{"name":"startTime","type":"uint256"},
 		{"name":"endTime","type":"uint256"},
 		{"name":"executionTime","type":"uint256"},
-		{"name":"Tip3VoteWalletCode","type":"cell"},
-		{"name":"tip3VoteRootAddress","type":"address"}
+		{"name":"tip3VoteWalletCode","type":"cell"},
+		{"name":"tip3VoteRootAddress","type":"address"},
+		{"name":"venomActionTotalValue","type":"uint128"},
+		{"name":"voteTrack","type":"map(address,bool)"}
 	]
 }

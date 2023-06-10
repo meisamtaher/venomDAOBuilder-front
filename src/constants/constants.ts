@@ -1,3 +1,3 @@
-let DAORootAddress ='0:15ad93ec6ed9ddacde69c5e4a69d476e8f6d0a75061088339bd3dfacec2a3de7';
+let DAORootAddress ='0:005c9cc1f94d451ad845b65979c0d4f224e74524f8f6135f034183f01444c6fa';
 
 export default DAORootAddress;

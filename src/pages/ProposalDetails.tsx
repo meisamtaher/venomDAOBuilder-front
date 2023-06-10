@@ -60,14 +60,14 @@ function ProposalDetails({ venomConnect, venomProvider, address }: Props) {
     console.log("Getting configs.... ");
     if(!daoContract || !proposalContract || !venomConnect) return;
     // console.log("Heeeeeeeey"); 
-    let resul1 = await daoContract?.methods.Config({}as never).call({});
-    setDaoConfig(resul1["Config"]);
+    let resul1 = await daoContract?.methods.getDAOConfig({}as never).call({});
+    setDaoConfig(resul1["config_"]);
     // let result2 = await proposalContract?.methods.initConfig({}as never).call({});
     // setProposalConfig( result2["initConfig"] );
     // let result3 = await proposalContract?.methods.getProposalState({}as never).call({});
     // setProposalStatus( result3["state_"] );
     let result4 = await proposalContract?.methods.getPorosposalOverview({}as never).call({});
-    setProposalStatus( result4["states_"] );
+    setProposalStatus( result4["state_"] );
     setProposalConfig( result4["initConf_"] );
     setProposalTime(result4["creationBlockTS_"]);
     setForVotes(Number(result4["forVotes_"]/10e9));
@@ -90,10 +90,18 @@ function ProposalDetails({ venomConnect, venomProvider, address }: Props) {
         booleanVote = false;
       }
       console.log("Boolean value: ", booleanVote);
-
+      let fee:number = 1;
+      let sponser = new Boolean();
+      if(prosposalConfig?["sponser"]:Boolean){
+        fee = 0.005;
+      }
+      else{
+        fee = 1;
+      }
+      console.log("Feee :",fee)
       let x = await proposalContract?.methods.vote({_support:booleanVote,_reason:""}as never).send({
         from: new Address(address!),
-        amount: getValueForSend(1),
+        amount: getValueForSend(fee),
         bounce: true
       });
       sendNotification({msg:"Vote transaction sent successfully",variant:"success"});

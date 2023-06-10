@@ -110,7 +110,7 @@ function CreateDAO({ venomConnect, venomProvider, address }: Props) {
       DaoConfig.proposalMaxDescriptionLen = formValues.maxProposalDescription;
       DaoConfig.proposalMaxOperations = formValues.maxProposalOperation;
       try {
-        let x = await contract?.methods.DeployDao({ _DaoConfig:DaoConfig
+        let x = await contract?.methods.deployDao({ _daoConfig:DaoConfig
           }as never)
          .send({
            from: walletAddress,

@@ -24,7 +24,7 @@ import Stack from '@mui/material/Stack';
 import DAOCard from '../components/DAOCard';
 import venomBridgePNG from '../assets/venom bridge.png';
 import {VenomConnect} from 'venom-connect';
-import daoBranchAbi from '../abi/DAO.abi.json';
+import daoAbi from '../abi/DAO.abi.json';
 import { Address, Contract, EventsBatch, ProviderRpcClient } from 'everscale-inpage-provider';
 
 
@@ -42,7 +42,7 @@ type Props = {
 function DAODetails({ venomConnect }: Props) {
   let { DAOId } = useParams();
   const navigate = useNavigate();
-  const[Proposals,setProposals] = useState<EventsBatch<typeof daoBranchAbi,"ProposalDeployed">| undefined>();
+  const[Proposals,setProposals] = useState<EventsBatch<typeof daoAbi,"ProposalDeployed">| undefined>();
   const[DAO, setDAO] = useState<{Name:string, Logo:string}|undefined>();
   const handleProposalClick = (key: string) => {
     navigate("/ExploreDAO/"+DAOId+"/"+key);
@@ -59,10 +59,10 @@ function DAODetails({ venomConnect }: Props) {
     const standalone: ProviderRpcClient | undefined = await venomConnect?.getStandalone('venomwallet');
     if(standalone && DAOId){
       let address = new Address(DAOId);
-      const DAO = new standalone.Contract(daoBranchAbi,address);
+      const DAO = new standalone.Contract(daoAbi,address);
       if(DAO){
         let x =  await DAO.methods.getDAOConfig({}as never).call({});
-        setDAO(x["DAOConfig_"]);
+        setDAO(x["config_"]);
         setProposals((await DAO.getPastEvents({
             filter: 'ProposalDeployed',
             range: {

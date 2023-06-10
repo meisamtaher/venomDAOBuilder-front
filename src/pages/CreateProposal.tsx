@@ -26,6 +26,10 @@ import {VenomConnect} from 'venom-connect';
 import {getValueForSend} from "../utils/helpers";
 import { Address, Contract, ProviderRpcClient, TvmException } from 'everscale-inpage-provider';
 import useNotification from '../components/Snackbar';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel'
+import { FormGroup } from '@mui/material';
+import { ThirtyFpsSelect } from '@mui/icons-material';
 
 var defaultValues = {
   title: "",
@@ -34,6 +38,7 @@ var defaultValues = {
   votingPeriod: 80, // 30 minutes period
   quorumVotes: 30, // 10 quorum votes required
   timeLock: 0, // 2 minutes timelock
+  sponser:false,
   threshold: 50, // 5 threshold votes required
   gracePeriod: 50 // 10 minutes grace period
 };
@@ -42,10 +47,10 @@ type Props = {
   venomProvider: any;
   address: string| undefined;
 };
-type Action = {
-  value: string,
-  tokenRootAddress: string,
-  recepient: string
+var defaultAction = {
+  value: "0",
+  target: "0:0",
+  payload: "",
 }
 
 function CreateProposal({ venomConnect, venomProvider, address }: Props) {
@@ -53,8 +58,10 @@ function CreateProposal({ venomConnect, venomProvider, address }: Props) {
   const navigate = useNavigate();
   const sendNotification = useNotification();
   const [proposalFrom, setFormValues] = useState(defaultValues);
-  const [actions, setActions] = useState<Action[]>([]);
-  const handleInputChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> ) => {
+  const [action, setAction] = useState(defaultAction);
+  const [sponser, setSponser] = useState<boolean>(false);
+  const [hasAction, setHasAction] = useState(false);
+  const handleInputChange = (e: { target: { name: any; value: any; }; } ) => {
     const { name, value } = e.target;
     setFormValues({
       ...proposalFrom,
@@ -62,14 +69,21 @@ function CreateProposal({ venomConnect, venomProvider, address }: Props) {
     });
     // console.log(name," : ", value);
   }; 
-  const addAction = ()=>{
-    let tempAction:Action = {
-      value:"",
-      tokenRootAddress:"",
-      recepient:""
+  const handleActionChange = (e: { target: { name: any; value: any; }; }) => {
+    const { name, value } = e.target;
+    setAction({
+      ...action,
+      [name]:value,
     }
-    setActions([...actions,tempAction]);
-    console.log(actions);
+      );
+    console.log(name," : ", value);
+  }; 
+  const addAction = ()=>{
+    setHasAction(true);
+  }
+  const onCheckedSponser = (event: any, switched: boolean | ((prevState: boolean) => boolean))=>{
+    setSponser(switched);
+    console.log("Checkbox: ",switched);
   }
   const DeployProposal = async() => {
     if(DAOId && venomProvider && venomConnect && address){
@@ -78,16 +92,16 @@ function CreateProposal({ venomConnect, venomProvider, address }: Props) {
       console.log("fethed contract:", contract);
       let walletAddress = new Address (address!);
       try {
-        let daoConfig = await contract?.methods.Config({}).call();
+        let daoConfig = await contract?.methods.getDAOConfig({}).call();
         console.log(daoConfig);
-        proposalFrom.gracePeriod =daoConfig.Config.MAX_GRACE_PERIOD;
-        proposalFrom.quorumVotes =daoConfig.Config.MAX_PROPOSAL_QUORUM;
-        proposalFrom.threshold =daoConfig.Config.MAX_TIP3_VOTE_THRESHOLD;
-        proposalFrom.timeLock =daoConfig.Config.MAX_TIME_LOCK;
-        proposalFrom.votingDelay =daoConfig.Config.MAX_VOTING_DELAY;
-        proposalFrom.votingPeriod =daoConfig.Config.MAX_VOTING_PERIOD;
+        proposalFrom.gracePeriod =daoConfig.config_.MAX_GRACE_PERIOD;
+        proposalFrom.quorumVotes =daoConfig.config_.MAX_PROPOSAL_QUORUM;
+        proposalFrom.threshold =daoConfig.config_.MAX_TIP3_VOTE_THRESHOLD;
+        proposalFrom.timeLock =daoConfig.config_.MAX_TIME_LOCK;
+        proposalFrom.votingDelay =daoConfig.config_.MAX_VOTING_DELAY;
+        proposalFrom.votingPeriod =daoConfig.config_.MAX_VOTING_PERIOD;
         console.log(proposalFrom);
-        let x = await contract?.methods.propose({_ProposalInitConfiguration: proposalFrom,
+        let x = await contract?.methods.propose({_proposalInitConfiguration: proposalFrom,
           _venomActions: [],
           } as never)
          .send({
@@ -142,6 +156,15 @@ function CreateProposal({ venomConnect, venomProvider, address }: Props) {
               onChange={handleInputChange}
             />
           </Stack>
+          <Stack  justifyContent={'start'} padding={2.5} direction={'column'} spacing={0.1} alignItems={'start'}> 
+            <FormGroup>
+              <FormControlLabel control={<Checkbox />} 
+              checked={sponser}
+              onChange={onCheckedSponser}
+              label="Sponsered" />
+            </FormGroup>
+            <Typography fontSize={10}>By checking this you can charge proposal contract to pay for vote gas fees instead of users</Typography>
+          </Stack>
           {/* <Stack padding={1.5} direction={'column'} spacing={0.1}>
             <Typography variant='h6'>Duration</Typography>
             <TextField required id="proposal-duration "
@@ -152,32 +175,39 @@ function CreateProposal({ venomConnect, venomProvider, address }: Props) {
             <Typography variant='h6'>Add Action</Typography>
             <Card>
               <Stack  direction={'column'} justifyContent={'center'} alignItems={'center'}>
-                {actions.length == 0 && <Stack  direction={'column'} justifyContent={'center'} alignItems={'center'}>
+                {!hasAction && <Stack  direction={'column'} justifyContent={'start'} alignItems={'center'}>
                   <SvgIcon sx={{ width:680,height:215,marginTop:4 }} component={AddActionSVG} viewBox="inherit"></SvgIcon>
                   <Typography fontSize = {13} sx={{ width:680 }} variant='h6'>
                   This action will execute if the vote passes. A common automatic action transferring funds to a guild or person if their proposal passes a vote.
                   </Typography>
                 </Stack>}
-                  {actions && actions?.map((a)=>(
+                  {hasAction &&
                     <Stack padding={5} direction={'column'} alignItems={'center'} spacing={3}>
                       <TextField required label = "Value"
-                        value = {a.value}
-                        placeholder="value of tokens that you want to transfer"
+                        value = {action.value}
+                        name = "value"
+                        onChange={handleActionChange}
+                        placeholder="value of tokens that should be sent in the transaction"
                       />
-                      <TextField required label = "Token Root Address"
-                        value = {a.tokenRootAddress}
-                        placeholder="value of tokens that you want to transfer"
+                      <TextField required label = "Address"
+                        value = {action.target}
+                        name = "target"
+                        onChange={handleActionChange}
+                        placeholder="address of smart contract that you want to call "
                       />
-                      <TextField required label = "Recipient"
-                        value = {a.recepient}
-                        placeholder="value of tokens that you want to transfer"
+                      <TextField  label = "TvmCell"
+                        value = {action.payload}
+                        name = "payload"
+                        onChange={handleActionChange}
+                        placeholder="TvmCell of the encoded function that you want to call"
                       />
                     </Stack>
-                  ))}            
+                  }            
                 <Stack sx={{width:'100%'}} direction={'row'} justifyContent={'end'} padding={2} >
-                  <Button sx={{widht:'300',height:'100', background:'E9E4FA' }} onClick={addAction}>
+                 {!hasAction && <Button sx={{widht:'300',height:'100', background:'E9E4FA' }} disabled onClick={addAction}>
                       + Add Action
                   </Button>
+                  } 
                 </Stack>
               </Stack>
             </Card>
