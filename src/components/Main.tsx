@@ -29,6 +29,7 @@ import CreateProposal from '../pages/CreateProposal';
 import DAODetails from '../pages/DAODetails';
 import ProposalDetails from '../pages/ProposalDetails';
 import { Snackbar } from '@mui/material';
+import HomePage from '../pages/HomePage';
 
 type Props = {
   venomConnect: VenomConnect | undefined;
@@ -169,6 +170,8 @@ function Main({ venomConnect }: Props) {
     <BrowserRouter>
       <MainLayout venomConnect={venomConnect} />
       <Routes>
+
+          <Route path = "" element = {<HomePage/>} />
           <Route path = "ExploreDAO" element={<ExploreDAO venomConnect = {venomConnect}/>} />
           <Route path = "CreateDAOIntro" element={<CreateDAOIntro />} />
           <Route path = "CreateDAO" element={<CreateDAO venomConnect= {venomConnect} venomProvider= {venomProvider} address = {address}/>} />
