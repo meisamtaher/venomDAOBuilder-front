@@ -171,13 +171,13 @@ function Main({ venomConnect }: Props) {
       <MainLayout venomConnect={venomConnect} />
       <Routes>
 
-          <Route path = "" element = {<HomePage/>} />
-          <Route path = "ExploreDAO" element={<ExploreDAO venomConnect = {venomConnect}/>} />
-          <Route path = "CreateDAOIntro" element={<CreateDAOIntro />} />
-          <Route path = "CreateDAO" element={<CreateDAO venomConnect= {venomConnect} venomProvider= {venomProvider} address = {address}/>} />
-          <Route path = "ExploreDAO/:DAOId" element={<DAODetails venomConnect= {venomConnect} />} />
-          <Route path = "ExploreDAO/:DAOId/:ProposalId" element={<ProposalDetails venomConnect= {venomConnect} venomProvider= {venomProvider} address = {address}/>} />
-          <Route path = "ExploreDAO/:DAOId/CreateNewPropoal" element={<CreateProposal venomConnect= {venomConnect} venomProvider= {venomProvider} address = {address}/>} />
+          <Route path = "/venomDAOBuilder-front" element = {<HomePage/>} />
+          <Route path = "/venomDAOBuilder-front/ExploreDAO" element={<ExploreDAO venomConnect = {venomConnect}/>} />
+          <Route path = "/venomDAOBuilder-front/CreateDAOIntro" element={<CreateDAOIntro />} />
+          <Route path = "/venomDAOBuilder-front/CreateDAO" element={<CreateDAO venomConnect= {venomConnect} venomProvider= {venomProvider} address = {address}/>} />
+          <Route path = "/venomDAOBuilder-front/ExploreDAO/:DAOId" element={<DAODetails venomConnect= {venomConnect} />} />
+          <Route path = "/venomDAOBuilder-front/ExploreDAO/:DAOId/:ProposalId" element={<ProposalDetails venomConnect= {venomConnect} venomProvider= {venomProvider} address = {address}/>} />
+          <Route path = "/venomDAOBuilder-front/ExploreDAO/:DAOId/CreateNewPropoal" element={<CreateProposal venomConnect= {venomConnect} venomProvider= {venomProvider} address = {address}/>} />
           {/* <Route path="blogs" element={<Blogs />} />
           <Route path="contact" element={<Contact />} />
           <Route path="*" element={<NoPage />} /> */}

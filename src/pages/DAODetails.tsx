@@ -45,10 +45,10 @@ function DAODetails({ venomConnect }: Props) {
   const[Proposals,setProposals] = useState<EventsBatch<typeof daoAbi,"ProposalDeployed">| undefined>();
   const[DAO, setDAO] = useState<{Name:string, Logo:string}|undefined>();
   const handleProposalClick = (key: string) => {
-    navigate("/ExploreDAO/"+DAOId+"/"+key);
+    navigate("/venomDAOBuilder-front/ExploreDAO/"+DAOId+"/"+key);
   };
   const handleNewPrposalClick = () => {
-    navigate("/ExploreDAO/"+DAOId+"/CreateNewPropoal");
+    navigate("/venomDAOBuilder-front/ExploreDAO/"+DAOId+"/CreateNewPropoal");
   };
   const getDAODetails = async()=>{
 

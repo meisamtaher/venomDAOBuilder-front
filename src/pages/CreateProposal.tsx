@@ -100,6 +100,7 @@ function CreateProposal({ venomConnect, venomProvider, address }: Props) {
         proposalFrom.timeLock =daoConfig.config_.MAX_TIME_LOCK;
         proposalFrom.votingDelay =daoConfig.config_.MAX_VOTING_DELAY;
         proposalFrom.votingPeriod =daoConfig.config_.MAX_VOTING_PERIOD;
+        proposalFrom.sponser = sponser;
         console.log(proposalFrom);
         let x = await contract?.methods.propose({_proposalInitConfiguration: proposalFrom,
           _venomActions: [],
@@ -111,7 +112,7 @@ function CreateProposal({ venomConnect, venomProvider, address }: Props) {
         })
         sendNotification({msg:"Proposal Deployment message has been sent",variant:"success"})
         console.log("deployment result :", x);
-        navigate("/ExploreDAO/"+DAOId);
+        navigate("/venomDAOBuilder-front/ExploreDAO/"+DAOId);
       } catch (e) {
         if (e instanceof TvmException) {
           console.log(`TVM Exception: ${e.code}`);

@@ -33,7 +33,7 @@ import {ReactComponent as homepagePicture} from "../assets/homepage.svg";
 function HomePage() {
     const navigate = useNavigate()
     const handleOnClick = ()=>{
-        navigate('ExploreDAO');
+        navigate('/venomDAOBuilder-front/ExploreDAO');
     }
   return (
     <Stack direction={'column'} padding = {5} alignItems={'center'} justifyContent={'center'} spacing={5}>

@@ -46,7 +46,7 @@ type Props = {
 function ExploreDAO({ venomConnect }: Props) {
   const navigate = useNavigate();
   const handleDaoClick = (key: string) => {
-    navigate("/ExploreDAO/"+key);
+    navigate("/venomDAOBuilder-front/ExploreDAO/"+key);
   };
   const [DAOs, setDAOs] = useState<EventsBatch<typeof daoRootAbi,"NewDAODeployed"> | undefined>();
   const onGetallDAOs = async() =>{

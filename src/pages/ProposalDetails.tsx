@@ -91,12 +91,11 @@ function ProposalDetails({ venomConnect, venomProvider, address }: Props) {
       }
       console.log("Boolean value: ", booleanVote);
       let fee:number = 1;
-      let sponser = new Boolean();
-      if(prosposalConfig?["sponser"]:Boolean){
-        fee = 0.005;
+      if(prosposalConfig && prosposalConfig["sponser"]){
+        fee = 0.05;
       }
       else{
-        fee = 1;
+        fee = 2;
       }
       console.log("Feee :",fee)
       let x = await proposalContract?.methods.vote({_support:booleanVote,_reason:""}as never).send({
@@ -157,6 +156,7 @@ function ProposalDetails({ venomConnect, venomProvider, address }: Props) {
         <Typography variant='h4'>{prosposalConfig?prosposalConfig["title"]:""} </Typography>
         <Stack direction={'row'} paddingTop={5}  paddingBottom={5} spacing={2} alignItems={'center'}>
           <ProposalStatus proposalState={proposalStatus?Number(proposalStatus):10}/>
+          {prosposalConfig && prosposalConfig["sponser"] && <Chip label = "Sponsered" color= 'info'></Chip>}
           <Avatar sizes='small' src={daoConfig?daoConfig["Logo"]:""}></Avatar>
           <Typography>{daoConfig?daoConfig["Name"]:""}</Typography>
         </Stack>

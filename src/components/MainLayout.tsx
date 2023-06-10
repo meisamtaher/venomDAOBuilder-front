@@ -147,15 +147,15 @@ function MainLayout({ venomConnect }: Props) {
     setAnchorElUser(event.currentTarget);
   };
   const handleLogoClick = () => {
-    navigate("");
+    navigate("/venomDAOBuilder-front");
   };
 
   const handleCloseNavMenu = (key: string) => {
     if(key == "ExploreDAO"){
-      navigate("/ExploreDAO");
+      navigate("/venomDAOBuilder-front/ExploreDAO");
     }
     else if(key == "CreateDAO"){
-      navigate("/CreateDAOIntro");
+      navigate("/venomDAOBuilder-front/CreateDAOIntro");
     }
     
   };

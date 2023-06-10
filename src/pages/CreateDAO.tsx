@@ -119,7 +119,7 @@ function CreateDAO({ venomConnect, venomProvider, address }: Props) {
         })
         sendNotification({msg:"Deployment message has been sent",variant:"success"})
         console.log("deployment result :", x);
-        navigate("/ExploreDAO");
+        navigate("/venomDAOBuilder-front/ExploreDAO");
 
       } catch (e) {
         if (e instanceof TvmException) {

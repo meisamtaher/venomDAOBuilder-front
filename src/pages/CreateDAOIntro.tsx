@@ -28,7 +28,7 @@ function CreateDAOIntro() {
   let { DAOId } = useParams();
   const navigate = useNavigate();
   const handleGetStartedClick = ()=>{
-    navigate("/CreateDAO");
+    navigate("/venomDAOBuilder-front/CreateDAO");
   }
   return (
     <Grid container padding={10} direction={'column'} spacing={5}>
